@@ -40,7 +40,8 @@ if (isset($_GET['id'])) {
 <html>
 <head>
   <title>Edit Post</title>
-  <link rel="stylesheet" href="include/css/bootstrap.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body class="bg-light">
 <!-- <div class="container mt-5">
@@ -67,6 +68,9 @@ if (isset($_GET['id'])) {
         <button class="btn btn-primary" type="submit">Update</button>
     </form>
 </div>
-<script src="include/js/bootstrap.bundle.js"></script>
+<!-- <script src="include/js/bootstrap.bundle.js"></script> -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

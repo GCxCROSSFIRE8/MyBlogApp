@@ -17,27 +17,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="include/css/bootstrap.css">
-</head>
-<body>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- <form method="POST">
-    <input type="email" name="email" placeholder="email" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Register</button>
-</form> -->
-<div class="container mt-5">
-    <h2>Register</h2>
-    <form method="POST">
+</head>
+<body class="bg-light">
+<?php include 'navbar.php'; ?>
+<div class="container mt-5" style="max-width:400px;">
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+      <h3 class="text-center mb-4">Create Account</h3>
+      <form method="POST">
         <div class="mb-3">
-            <input class="form-control" type="email" name="email" placeholder="Email" required>
+          <input class="form-control form-control-lg" type="email" name="email" placeholder="Email" required>
         </div>
         <div class="mb-3">
-            <input class="form-control" type="password" name="password" placeholder="Password" required>
+          <input class="form-control form-control-lg" type="password" name="password" placeholder="Password" required>
         </div>
-        <button class="btn btn-primary" type="submit">Register</button>
+        <button class="btn btn-success btn-lg w-100">Register</button>
+      </form>
+      <p class="mt-3 text-center">
+        Already registered? <a href="log-in.php">Log In</a>
+      </p>
+      <p class="text-center">
+        <a href="view.php">Browse Posts</a>
+      </p>
+    </div>
+  </div>
+</div>
+
     </form>
 </div>
-<script src="include/js/bootstrap.bundle.js"></script>
+<!-- <script src="include/js/bootstrap.bundle.js"></script> -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

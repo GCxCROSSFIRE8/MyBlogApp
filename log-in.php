@@ -41,45 +41,43 @@ if ($user) {
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="include/css/bootstrap.css">
-</head>
-<body>
+   
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<div class="container mt-5">
-    <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h3 class="text-center mb-4">Welcome Back 👋</h3>
-                    <form method="POST">
-                        <div class="mb-3">
-                            <label>Email</label>
-                            <input class="form-control" type="email" name="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Password</label>
-                            <input class="form-control" type="password" name="password" required>
-                        </div>
-                        <button class="btn btn-primary w-100">Login</button>
-                    </form>
-                </div>
+</head>
+<body class="bg-light">
+<?php include 'navbar.php'; ?>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px;">
+        <h3 class="text-center mb-4">🔐 Login to MyBlogApp</h3>
+        <?php if (isset($error)): ?>
+            <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+        <?php endif; ?>
+        <form method="POST" action="">
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" required placeholder="you@example.com">
             </div>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" required placeholder="Your password">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+        <p class="mt-3 text-center">
+            Not registered yet? <a href="register.php">Create an account</a><br>
+            <a href="view.php">🌍 Want to browse more posts?</a>
+        </p>
     </div>
 </div>
 
-    <!-- <h2 class="text-center">Login</h2>
-    <form method="POST" class="p-4 border rounded shadow" style="max-width: 400px; margin: auto;">
-        <div class="mb-3">
-            <input class="form-control" type="email" name="email" placeholder="Email" required>
-        </div>
-        <div class="mb-3">
-            <input class="form-control" type="password" name="password" placeholder="Password" required>
-        </div>
-        <button class="btn btn-primary w-100" type="submit">Login</button> -->
+
     </form>
 </div>
-<script src="include/js/bootstrap.bundle.js"></script>
+<!-- <script src="include/js/bootstrap.bundle.js"></script> -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

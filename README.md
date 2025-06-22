@@ -1,37 +1,63 @@
-# MyBlogApp - PHP CRUD Blog Project
+# 🚀 MyBlogApp
 
-This is a basic blog application built with PHP and MySQL as part of my internship task. It includes user authentication and CRUD operations for managing blog posts.
+A full-featured, responsive blog app built with PHP, MySQL, and Bootstrap 5.
 
-## 🚀 Features
+## 🌟 Features
 
-- Register & Login system (Session-based)
-- Dashboard to view all posts
-- Add new blog post
-- Edit existing blog post
-- Delete a post
-- View a single post
-- Clean Bootstrap UI
+- ✅ **User authentication**: register, login, logout (session-based)
+- 📝 **Post management**: create, edit, and delete posts
+- 🌍 **Global post view**: browse posts from all users
+- 🔍 **Search**: filter posts by title, content, or author (email)
+- 📄 **Pagination**: limited posts per page with easy navigation (5 for view, 4 for dashboard)
+- 👤 **User-specific dashboard**: view and manage your own posts
+- 🧩 **Responsive UI**: includes navbar, forms, cards, alerts — looks great on mobile and desktop
 
 ## 🛠️ Tech Stack
 
-- PHP
-- MySQL
-- HTML/CSS (Bootstrap)
-- XAMPP (Apache + MySQL Server)
-- VS Code
+- PHP (with sessions & MySQL)
+- MySQL database
+- Bootstrap 5 for modern, mobile-first design
+- XAMPP (Apache + MySQL)
 
-## 📁 Folder Structure
+## 📁 File Overview
 
 myblogapp/
-│
-├── db.php # Database connection file
-├── register.php # User registration
+├── db.php # Database connection
+├── navbar.php # Reusable Bootstrap navbar
+├── dashboard.php # User's post management (+ pagination & search)
+├── view.php # Public view of all posts (+ author, date, pagination, search)
 ├── log-in.php # Login form
-├── log-out.php # Logout
-├── dashboard.php # Dashboard for blog posts
-├── edit.php # Edit post
-├── delete.php # Delete post
-├── view.php # View single post
-├── README.md # Project documentation
-└── include/
-└── bootstrap/ # Bootstrap CSS and JS files
+├── register.php # Registration form
+├── log-out.php # Logs out user (session destroy)
+├── edit.php # Edit user's post
+├── delete.php # Delete user's post
+├── include/
+│ ├── css/bootstrap.css # (optional local Bootstrap)
+│ └── js/bootstrap.bundle.js # (optional local Bootstrap JS)
+└── README.md # This file
+
+---
+
+## ⚡ Setup Instructions
+
+1. Clone the project to your web root (e.g., `C:/xampp/htdocs`)
+2. Create a MySQL database named `myblogapp`
+3. In `db.php`, set your DB credentials
+4. Create two tables:
+
+   ```sql
+   CREATE TABLE users (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     email_id VARCHAR(255) UNIQUE NOT NULL,
+     password VARCHAR(255) NOT NULL
+   );
+
+   CREATE TABLE posts (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     user_id INT NOT NULL,
+     title VARCHAR(255) NOT NULL,
+     content TEXT NOT NULL,
+     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+     FOREIGN KEY (user_id) REFERENCES users(id)
+   );
+   ```

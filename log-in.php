@@ -3,7 +3,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
+
+
+
 require 'db.php';
+
+$error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
@@ -12,22 +17,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "❌ Invalid email format.";
     } else {
-        // Use prepared statement
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email_id = :email LIMIT 1");
-        $stmt->execute(['email' => $email]);
-        $user = $stmt->fetch();
+        try {
+            $stmt = $conn->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
+            $stmt->execute(['email' => $email]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user['password'])) {
-            // Store session data
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['email'] = $user['email_id'];
-            $_SESSION['username'] = $user['name'] ?? ''; // In case you add name column later
-            $_SESSION['role'] = $user['role'] ?? 'user';
+            if ($user && password_verify($password, $user['password'])) {
+               
 
-            header("Location: dashboard.php");
-            exit();
-        } else {
-            $error = "❌ Invalid email or password.";
+                // Store session data
+                $_SESSION['user_id']  = $user['id'];
+                $_SESSION['email']    = $user['email'];
+                $_SESSION['username'] = $user['name'] ?? '';
+                $_SESSION['role']     = $user['role'] ?? 'user'; // Assign role
+
+$_SESSION['user_id']  = $user['id'];
+$_SESSION['email']    = $user['email'];
+$_SESSION['username'] = $user['name'] ?? '';
+$_SESSION['role']     = $user['role'] ?? 'user';
+  header("Location: dashboard.php");
+                exit();
+            } else {
+                $error = "❌ Invalid email or password.";
+            }
+        } catch (PDOException $e) {
+            $error = "⚠️ Database error: " . htmlspecialchars($e->getMessage());
         }
     }
 }
@@ -36,6 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <title>Login - MyBlogApp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -45,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px;">
         <h3 class="text-center mb-4">🔐 Login to MyBlogApp</h3>
 
-        <?php if (isset($error)): ?>
+        <?php if (!empty($error)): ?>
             <div class="alert alert-danger text-center"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
@@ -71,3 +87,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

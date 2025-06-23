@@ -2,6 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+$currentFile = basename($_SERVER['PHP_SELF']);
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
@@ -17,10 +19,21 @@ if (session_status() === PHP_SESSION_NONE) {
       <ul class="navbar-nav mb-2 mb-lg-0">
 
         <?php if (isset($_SESSION['user_id'])): ?>
+          
+          <?php if ($_SESSION['role'] === 'admin'): ?>
+            <li class="nav-item">
+              <a 
+                class="nav-link <?= $currentFile === 'admin.php' ? 'active' : ''; ?>" 
+                href="admin.php"
+              >
+                🛠️ Admin Panel
+              </a>
+            </li>
+          <?php endif; ?>
+
           <li class="nav-item">
             <a 
-              class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'active' : ''; ?>" 
-              aria-current="<?php echo basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'page' : ''; ?>" 
+              class="nav-link <?= $currentFile === 'dashboard.php' ? 'active' : ''; ?>" 
               href="dashboard.php"
             >
               🏠 Dashboard
@@ -29,8 +42,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
           <li class="nav-item">
             <a 
-              class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'view.php' ? 'active' : ''; ?>" 
-              aria-current="<?php echo basename($_SERVER['PHP_SELF']) === 'view.php' ? 'page' : ''; ?>" 
+              class="nav-link <?= $currentFile === 'view.php' ? 'active' : ''; ?>" 
               href="view.php"
             >
               🌍 All Posts
@@ -45,8 +57,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
           <li class="nav-item">
             <a 
-              class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'log-in.php' ? 'active' : ''; ?>" 
-              aria-current="<?php echo basename($_SERVER['PHP_SELF']) === 'log-in.php' ? 'page' : ''; ?>" 
+              class="nav-link <?= $currentFile === 'log-in.php' ? 'active' : ''; ?>" 
               href="log-in.php"
             >
               🔐 Login
@@ -55,8 +66,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
           <li class="nav-item">
             <a 
-              class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'register.php' ? 'active' : ''; ?>" 
-              aria-current="<?php echo basename($_SERVER['PHP_SELF']) === 'register.php' ? 'page' : ''; ?>" 
+              class="nav-link <?= $currentFile === 'register.php' ? 'active' : ''; ?>" 
               href="register.php"
             >
               📝 Register
@@ -65,8 +75,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
           <li class="nav-item">
             <a 
-              class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'view.php' ? 'active' : ''; ?>" 
-              aria-current="<?php echo basename($_SERVER['PHP_SELF']) === 'view.php' ? 'page' : ''; ?>" 
+              class="nav-link <?= $currentFile === 'view.php' ? 'active' : ''; ?>" 
               href="view.php"
             >
               🌍 Browse Posts
@@ -79,6 +88,7 @@ if (session_status() === PHP_SESSION_NONE) {
     </div>
   </div>
 </nav>
+
 
 
 

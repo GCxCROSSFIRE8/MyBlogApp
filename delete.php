@@ -7,29 +7,43 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-if (isset($_GET['id'])) {
-    $id = (int) $_GET['id'];
-    $user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['user_id'];
+$user_role = $_SESSION['role'] ?? 'user';
 
-    try {
-        // Use prepared statement to delete only if user owns the post
-        $stmt = $conn->prepare("DELETE FROM posts WHERE id = :id AND user_id = :user_id");
-        $stmt->execute([
-            ':id' => $id,
-            ':user_id' => $user_id
-        ]);
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header("Location: dashboard.php");
+    exit();
+}
 
-        if ($stmt->rowCount() > 0) {
-            header("Location: dashboard.php?deleted=1");
-            exit();
-        } else {
-            echo "<div class='alert alert-danger text-center'>⚠️ You cannot delete this post or it does not exist.</div>";
-        }
-    } catch (PDOException $e) {
-        echo "<div class='alert alert-danger text-center'>⚠️ Database error: " . htmlspecialchars($e->getMessage()) . "</div>";
+$post_id = (int)$_GET['id'];
+
+try {
+    // Fetch post to check existence
+    $stmt = $conn->prepare("SELECT * FROM posts WHERE id = :id AND deleted_at IS NULL");
+    $stmt->execute([':id' => $post_id]);
+    $post = $stmt->fetch();
+
+    if (!$post) {
+        $_SESSION['flash_error'] = "Post not found.";
+        header("Location: dashboard.php");
         exit();
     }
-} else {
-    echo "<div class='alert alert-danger text-center'>⚠️ Invalid post ID.</div>";
+
+    // Only admin can delete
+    if ($user_role !== 'admin') {
+        $_SESSION['flash_error'] = "❌ You can't delete this post.";
+        header("Location: dashboard.php");
+        exit();
+    }
+
+    // Soft delete post by setting deleted_at timestamp
+    $deleteStmt = $conn->prepare("UPDATE posts SET deleted_at = NOW() WHERE id = :id");
+    $deleteStmt->execute([':id' => $post_id]);
+
+    $_SESSION['flash_success'] = "✅ Post deleted successfully!";
+    header("Location: dashboard.php");
+    exit();
+
+} catch (PDOException $e) {
+    die("Database error: " . htmlspecialchars($e->getMessage()));
 }
-?>

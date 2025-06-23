@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "❌ Password must be at least 6 characters.";
     } else {
         // Check for existing user
-        $checkStmt = $conn->prepare("SELECT id FROM users WHERE email_id = :email");
+        $checkStmt = $conn->prepare("SELECT id FROM users WHERE email = :email");
         $checkStmt->execute(['email' => $email]);
 
         if ($checkStmt->rowCount() > 0) {
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             $role = 'user'; // default role
 
-            $stmt = $conn->prepare("INSERT INTO users (email_id, password, role) VALUES (:email, :password, :role)");
+            $stmt = $conn->prepare("INSERT INTO users (email, password, role) VALUES (:email, :password, :role)");
             $stmt->execute([
                 'email' => $email,
                 'password' => $hashedPassword,
